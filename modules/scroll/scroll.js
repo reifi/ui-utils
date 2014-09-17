@@ -17,7 +17,7 @@ angular.module('ui.scroll', []).directive('uiScrollViewport', [
     return {
       controller: [
         '$scope', '$element', function(scope, element) {
-          return element;
+          this.viewport = element;
         }
       ]
     };
@@ -67,7 +67,7 @@ angular.module('ui.scroll', []).directive('uiScrollViewport', [
             if (repeaterType !== 'li' && repeaterType !== 'tr') {
               repeaterType = 'div';
             }
-            viewport = controllers[0] || angular.element(window);
+            viewport = controllers[0].viewport || angular.element(window);
             viewport.css({
               'overflow-y': 'auto',
               'display': 'block'

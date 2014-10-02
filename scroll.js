@@ -20,6 +20,7 @@ angular.module('ui.scroll', []).directive('uiScrollViewport', [
         '$element',
         function (scope, element) {
           this.viewport = element;
+          return this;
         }
       ]
     };
@@ -48,7 +49,18 @@ angular.module('ui.scroll', []).directive('uiScrollViewport', [
           isDatasource = function (datasource) {
             return angular.isObject(datasource) && datasource.get && angular.isFunction(datasource.get);
           };
-          datasource = $scope[datasourceName];
+          getValueChain = function (targetScope, target) {
+            var chain;
+            if (!targetScope) {
+              return null;
+            }
+            chain = target.match(/^([\w]+)\.(.+)$/);
+            if (!chain || chain.length !== 3) {
+              return targetScope[target];
+            }
+            return getValueChain(targetScope[chain[1]], chain[2]);
+          };
+          datasource = getValueChain($scope, datasourceName);
           if (!isDatasource(datasource)) {
             datasource = $injector.get(datasourceName);
             if (!isDatasource(datasource)) {
@@ -73,7 +85,7 @@ angular.module('ui.scroll', []).directive('uiScrollViewport', [
             if (repeaterType !== 'li' && repeaterType !== 'tr') {
               repeaterType = 'div';
             }
-            viewport = controllers[0].viewport || angular.element(window);
+            viewport = controllers[0] && controllers[0].viewport ? controllers[0].viewport : angular.element(window);
             viewport.css({
               'overflow-y': 'auto',
               'display': 'block'

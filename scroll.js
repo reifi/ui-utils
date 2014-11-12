@@ -20,7 +20,7 @@ angular.module('ui.scroll', []).directive('uiScrollViewport', [
         '$element',
         function (scope, element) {
           this.viewport = element;
-          return this;
+          this.viewportScope = scope;
         }
       ]
     };
@@ -149,7 +149,7 @@ angular.module('ui.scroll', []).directive('uiScrollViewport', [
             };
           });
           viewport = adapter.viewport;
-          viewportScope = viewport.scope() || $rootScope;
+          viewportScope = controllers[0].viewportScope;
           if (angular.isDefined($attr.topVisible)) {
             topVisibleItem = function (item) {
               return viewportScope[$attr.topVisible] = item;

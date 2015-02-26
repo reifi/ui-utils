@@ -441,7 +441,7 @@ angular.module('ui.scroll', []).directive('uiScrollViewport', [
               } else {
                 return datasource.get(next, bufferSize, function (result) {
                   var item, newItems, _i, _len;
-                  if (rid && rid !== ridActual) {
+                  if ((rid && rid !== ridActual) || $scope.$$destroyed) {
                     return;
                   }
                   newItems = [];
@@ -465,7 +465,7 @@ angular.module('ui.scroll', []).directive('uiScrollViewport', [
               } else {
                 return datasource.get(first - bufferSize, bufferSize, function (result) {
                   var i, newItems, _i, _ref;
-                  if (rid && rid !== ridActual) {
+                  if ((rid && rid !== ridActual) || $scope.$$destroyed) {
                     return;
                   }
                   newItems = [];
